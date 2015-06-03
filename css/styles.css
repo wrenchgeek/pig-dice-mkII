@@ -2,6 +2,16 @@
   display: none;
 }
 
+html, body {
+  height: 100%;
+}
+
+h1.page-header {
+  font-family: 'Amatic SC', cursive;
+  font-size: 100px;
+  margin-top: 5px;
+}
+
 .col-md-4 {
   height: 100% !important;
 }
@@ -18,9 +28,15 @@
 .messages-wrapper {
   border: 1px solid #ddd;
   border-radius: 5px;
-  height: 70px;
+  min-height: 70px;
   margin-bottom: 15px;
   padding: 0 20px;
+  font-family: 'Amatic SC', cursive;
+  background: white;
+}
+
+.messages-wrapper h5 {
+  font-size: 30px;
 }
 
 #message {
@@ -48,6 +64,28 @@
   margin: 0 auto;
 }
 
+.container.page-wrapper {
+  margin-top: 25px;
+  padding-bottom: 20px;
+  background: rgba(255, 255, 255, .5);
+}
+
+.dice-result-wrapper {
+  height: 145px;
+}
+
+.dice-result-wrapper > span {
+  display: inline-block;
+}
+
+button:focus {
+  outline: none !important;
+}
+
+.well {
+  height: 200px;
+}
+
 .dice-one {
   background-position: -2px -2px;
 }
@@ -70,4 +108,10 @@
 
 .dice-six {
   background-position: -503px -2px;
+}
+
+@media (min-width: 768px) {
+  .dice-result-wrapper > span {
+    margin-bottom: 35px;
+  }
 }

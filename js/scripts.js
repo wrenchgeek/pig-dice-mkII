@@ -41,8 +41,8 @@ function switchCurrentPlayer() {
   $("#current-player").text(currentPlayer.name);
 
   currentRoundScores = [];
-
   updateRoundScore();
+  disableEndTurnBtn();
 }
 
 function setMessage(message) {
@@ -66,7 +66,42 @@ function resetGame() {
   setMessage("A new game begins! " + currentPlayer.name + " was randomly selected to start this round.");
 }
 
+function disableEndTurnBtn() {
+  $("#end-turn").prop('disabled', true);
+}
+
+function enableEndTurnBtn() {
+  $("#end-turn").prop('disabled', false);
+}
+
+function updateBackground(url) {
+  $("body").css({"background": "url('./images/" + url + "')", "background-size": "100% 100%"});
+}
+
+function rolledOne() {
+  switchCurrentPlayer();
+  setMessage("Oh no! You rolled a 1, you lose your current points and end your turn. You're up, " + currentPlayer.name + "!");
+  disableEndTurnBtn();
+  setRandomFailBackground();
+  $("#dice-image").effect("shake", {times: 8}, 800);
+}
+
+function setRandomFailBackground() {
+  var failImages = ["fail1.gif",
+                    "fail2.gif",
+                    "fail3.gif",
+                    "fail4.gif",
+                    "fail5.gif",
+                    "fail6.gif"];
+
+  updateBackground(failImages[Math.floor(Math.random() * failImages.length)]);
+}
+
 $(function() {
+  disableEndTurnBtn();
+
+  $(".dice-result-wrapper *").hide();
+
   var diceImage = $("#dice-image");
 
   $("form#add-players").submit(function(event) {
@@ -92,7 +127,10 @@ $(function() {
   });
 
   $("#roll-dice").click(function() {
+    updateBackground("");
     clearMessage();
+    enableEndTurnBtn();
+
     var diceResult = Math.floor(Math.random() * (7 - 1)) + 1;
 
     currentRoundScores.push(diceResult);
@@ -100,11 +138,10 @@ $(function() {
     $("#current-round-score").text(getCurrentRoundScore());
 
     diceImage.removeClass().addClass("dice");
-    
+
     if (diceResult === 1) {
       diceImage.addClass("dice-one");
-      switchCurrentPlayer();
-      setMessage("Oh no! You rolled a 1, you lose your current points and end your turn.")
+      rolledOne();
     } else if (diceResult === 2) {
       diceImage.addClass("dice-two");
     } else if (diceResult === 3) {
@@ -132,6 +169,8 @@ $(function() {
     if (currentPlayer.score >= 100) {
       setMessage("Congratulations " + currentPlayer.name + "! You win!");
       $("#message").append("<span class='clear-scores linkify'> Click here to play again!</span>");
+
+      updateBackground("success1.gif");
 
       $(".clear-scores").click(function() {
         resetGame();
