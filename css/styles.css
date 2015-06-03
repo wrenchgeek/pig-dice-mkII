@@ -1,0 +1,37 @@
+#show-game {
+  display: none;
+}
+
+.col-md-4 {
+  height: 100% !important;
+}
+
+.stretch {
+  display: inline-block;
+  width: 100%;
+}
+
+.stretch:first-child {
+  margin-bottom: 10px;
+}
+
+.messages-wrapper {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  height: 70px;
+  margin-bottom: 15px;
+  padding: 0 20px;
+}
+
+#message {
+  line-height: 50px;
+}
+
+.linkify {
+  color: blue;
+  cursor: pointer;
+}
+
+.linkify:hover {
+  text-decoration: underline;
+}
