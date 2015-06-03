@@ -67,6 +67,7 @@ function resetGame() {
 }
 
 $(function() {
+  var diceImage = $("#dice-image");
 
   $("form#add-players").submit(function(event) {
     event.preventDefault();
@@ -77,8 +78,8 @@ $(function() {
     playerOne = new Player(playerOneName);
     playerTwo = new Player(playerTwoName);
 
-    updateTextOnPage(".player-1-name", playerOne.name);
-    updateTextOnPage(".player-2-name", playerTwo.name);
+    updateTextOnPage(".player-1-name", playerOne.name + "'s score: ");
+    updateTextOnPage(".player-2-name", playerTwo.name + "'s score: ");
 
     $(this).parent().hide();
     $("#show-game").show();
@@ -98,12 +99,25 @@ $(function() {
 
     $("#current-round-score").text(getCurrentRoundScore());
 
-    $(".dice-result").text(diceResult);
-
+    diceImage.removeClass().addClass("dice");
+    
     if (diceResult === 1) {
+      diceImage.addClass("dice-one");
       switchCurrentPlayer();
       setMessage("Oh no! You rolled a 1, you lose your current points and end your turn.")
+    } else if (diceResult === 2) {
+      diceImage.addClass("dice-two");
+    } else if (diceResult === 3) {
+      diceImage.addClass("dice-three");
+    } else if (diceResult === 4) {
+      diceImage.addClass("dice-four");
+    } else if (diceResult === 5) {
+      diceImage.addClass("dice-five");
+    } else if (diceResult === 6) {
+      diceImage.addClass("dice-six");
     }
+
+    $(".dice-result-wrapper *").show();
   });
 
   $("#end-turn").click(function() {
@@ -112,6 +126,8 @@ $(function() {
     currentPlayer.score += getCurrentRoundScore();
 
     updatePlayerScores();
+
+    $(".dice-result-wrapper *").hide();
 
     if (currentPlayer.score >= 100) {
       setMessage("Congratulations " + currentPlayer.name + "! You win!");

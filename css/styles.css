@@ -35,3 +35,39 @@
 .linkify:hover {
   text-decoration: underline;
 }
+
+.scores-wrapper .primary:first-child {
+  display: inline-block;
+  width: 60%;
+}
+
+.dice {
+  height: 98px;
+  width: 98px;
+  background: url("../images/dice.png") no-repeat;
+  margin: 0 auto;
+}
+
+.dice-one {
+  background-position: -2px -2px;
+}
+
+.dice-two {
+  background-position: -102px -2px;
+}
+
+.dice-three {
+  background-position: -202px -2px;
+}
+
+.dice-four {
+  background-position: -302px -2px;
+}
+
+.dice-five {
+  background-position: -402px -2px;
+}
+
+.dice-six {
+  background-position: -503px -2px;
+}
