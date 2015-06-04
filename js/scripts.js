@@ -29,7 +29,10 @@ function updateRoundScore() {
 
 function getRandomPlayer(playerOne, playerTwo) {
   var players = [playerOne, playerTwo];
-  return players[Math.round(Math.random())];
+  var randomPlayer = players[Math.round(Math.random())];
+  $("#current-player").text(randomPlayer.name);
+  return randomPlayer;
+  // return players[Math.round(Math.random())];
 }
 
 function switchCurrentPlayer() {
@@ -61,6 +64,7 @@ function resetGame() {
   playerOne.score = 0;
   playerTwo.score = 0;
   updatePlayerScores();
+  enableRollBtn();
 
   currentPlayer = getRandomPlayer(playerOne, playerTwo);
   setMessage("A new game begins! " + currentPlayer.name + " was randomly selected to start this round.");
@@ -72,6 +76,13 @@ function disableEndTurnBtn() {
 
 function enableEndTurnBtn() {
   $("#end-turn").prop('disabled', false);
+}
+function disableRollBtn() {
+  $("#roll-dice").prop('disabled', true);
+}
+
+function enableRollBtn() {
+  $("#roll-dice").prop('disabled', false);
 }
 
 function updateBackground(url) {
@@ -113,8 +124,10 @@ $(function() {
     playerOne = new Player(playerOneName);
     playerTwo = new Player(playerTwoName);
 
-    updateTextOnPage(".player-1-name", playerOne.name + "'s score: ");
-    updateTextOnPage(".player-2-name", playerTwo.name + "'s score: ");
+    // updateTextOnPage(".player-1-name", playerOne.name + "'s score: ");
+    // updateTextOnPage(".player-2-name", playerTwo.name + "'s score: ");
+    updateTextOnPage(".player-1-name", playerOne.name + "'s");
+    updateTextOnPage(".player-2-name", playerTwo.name + "'s");
 
     $(this).parent().hide();
     $("#show-game").show();
@@ -131,7 +144,7 @@ $(function() {
     clearMessage();
     enableEndTurnBtn();
 
-    var diceResult = Math.floor(Math.random() * (7 - 1)) + 1;
+    var diceResult = Math.floor(Math.random() * 6) + 1;
 
     currentRoundScores.push(diceResult);
 
@@ -166,11 +179,13 @@ $(function() {
 
     $(".dice-result-wrapper *").hide();
 
-    if (currentPlayer.score >= 100) {
+    if (currentPlayer.score >= 20) {
+    // if (currentPlayer.score >= 100) {
       setMessage("Congratulations " + currentPlayer.name + "! You win!");
       $("#message").append("<span class='clear-scores linkify'> Click here to play again!</span>");
 
       updateBackground("success1.gif");
+      disableRollBtn();
 
       $(".clear-scores").click(function() {
         resetGame();
