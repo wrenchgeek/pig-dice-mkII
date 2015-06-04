@@ -94,7 +94,7 @@ function rolledOne() {
   setMessage("Oh no! You rolled a 1, you lose your current points and end your turn. You're up, " + currentPlayer.name + "!");
   disableEndTurnBtn();
   setRandomFailBackground();
-  $("#dice-image").effect("shake", {times: 8}, 800);
+  $(".dice-image").effect("shake", {times: 8}, 800);
 }
 
 function setRandomFailBackground() {
@@ -111,9 +111,12 @@ function setRandomFailBackground() {
 $(function() {
   disableEndTurnBtn();
 
+  var variation = NaN;
+
   $(".dice-result-wrapper *").hide();
 
-  var diceImage = $("#dice-image");
+  var diceImage = $(".dice-image");
+  var diceImage2 =$(".dice-image2");
 
   $("form#add-players").submit(function(event) {
     event.preventDefault();
@@ -130,6 +133,13 @@ $(function() {
     updateTextOnPage(".player-2-name", playerTwo.name + "'s");
 
     $(this).parent().hide();
+
+    variation = $("#variation").val();
+    if (variation !== "traditional") {
+      $(".dice-result-wrapper").append('<div class="dice-image2"></div>');
+      diceImage2 = $(".dice-image2");
+    }
+
     $("#show-game").show();
 
     currentPlayer = getRandomPlayer(playerOne, playerTwo);
@@ -145,7 +155,6 @@ $(function() {
     enableEndTurnBtn();
 
     var diceResult = Math.floor(Math.random() * 6) + 1;
-
     currentRoundScores.push(diceResult);
 
     $("#current-round-score").text(getCurrentRoundScore());
@@ -167,7 +176,33 @@ $(function() {
       diceImage.addClass("dice-six");
     }
 
+    if (variation !== "traditional") {
+      diceResult = Math.floor(Math.random() * 6) + 1;
+
+      currentRoundScores.push(diceResult);
+
+      $("#current-round-score").text(getCurrentRoundScore());
+      diceImage2.removeClass().addClass("dice");
+
+      if (diceResult === 1) {
+        diceImage2.addClass("dice-one");
+        rolledOne();
+      } else if (diceResult === 2) {
+        diceImage2.addClass("dice-two");
+      } else if (diceResult === 3) {
+        diceImage2.addClass("dice-three");
+      } else if (diceResult === 4) {
+        diceImage2.addClass("dice-four");
+      } else if (diceResult === 5) {
+        diceImage2.addClass("dice-five");
+      } else if (diceResult === 6) {
+        diceImage2.addClass("dice-six");
+      }
+
+    }
+
     $(".dice-result-wrapper *").show();
+
   });
 
   $("#end-turn").click(function() {
