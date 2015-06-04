@@ -94,7 +94,8 @@ function rolledOne() {
   setMessage("Oh no! You rolled a 1, you lose your current points and end your turn. You're up, " + currentPlayer.name + "!");
   disableEndTurnBtn();
   setRandomFailBackground();
-  $(".dice-image").effect("shake", {times: 8}, 800);
+  $(".dice-image1").effect("shake", {times: 8}, 800);
+  $(".dice-image2").effect("shake", {times: 8}, 800);
 }
 
 function setRandomFailBackground() {
@@ -107,6 +108,30 @@ function setRandomFailBackground() {
 
   updateBackground(failImages[Math.floor(Math.random() * failImages.length)]);
 }
+
+function twoPig(dieResult1, dieResult2) {
+  if (dieResult1 === 1 && dieResult2 === 1) {
+    currentPlayer.score = 0;
+    switchCurrentPlayer();
+    setMessage("Oh no! Snake Eyes, you just lost all your points. You're up, " + currentPlayer.name + "!");
+    disableEndTurnBtn();
+    setRandomFailBackground();
+    updatePlayerScores();
+    $(".dice-image1").effect("shake", {times: 8}, 800);
+    $(".dice-image2").effect("shake", {times: 8}, 800);
+
+  }
+
+  if (dieResult1 === dieResult2 && dieResult1 !== 1) {
+    setMessage("You rolled doubles! You must roll again! Good luck with that!");
+    disableEndTurnBtn();
+    $(".dice-image1").effect("explode", {times: 8}, 800);
+    $(".dice-image2").effect("explode", {times: 8}, 800);
+
+  }
+}
+
+function bigPig
 
 $(function() {
   disableEndTurnBtn();
@@ -154,49 +179,55 @@ $(function() {
     clearMessage();
     enableEndTurnBtn();
 
-    var diceResult = Math.floor(Math.random() * 6) + 1;
-    currentRoundScores.push(diceResult);
+    var diceResult1 = Math.floor(Math.random() * 6) + 1;
+    var diceResult2 = Math.floor(Math.random() * 6) + 1;
+    currentRoundScores.push(diceResult1);
 
     $("#current-round-score").text(getCurrentRoundScore());
 
     diceImage.removeClass().addClass("dice");
 
-    if (diceResult === 1) {
+    if (diceResult1 === 1) {
       diceImage.addClass("dice-one");
       rolledOne();
-    } else if (diceResult === 2) {
+    } else if (diceResult1 === 2) {
       diceImage.addClass("dice-two");
-    } else if (diceResult === 3) {
+    } else if (diceResult1 === 3) {
       diceImage.addClass("dice-three");
-    } else if (diceResult === 4) {
+    } else if (diceResult1 === 4) {
       diceImage.addClass("dice-four");
-    } else if (diceResult === 5) {
+    } else if (diceResult1 === 5) {
       diceImage.addClass("dice-five");
-    } else if (diceResult === 6) {
+    } else if (diceResult1 === 6) {
       diceImage.addClass("dice-six");
     }
 
     if (variation !== "traditional") {
-      diceResult = Math.floor(Math.random() * 6) + 1;
 
-      currentRoundScores.push(diceResult);
+      currentRoundScores.push(diceResult2);
 
       $("#current-round-score").text(getCurrentRoundScore());
       diceImage2.removeClass().addClass("dice");
 
-      if (diceResult === 1) {
+      if (diceResult2 === 1) {
         diceImage2.addClass("dice-one");
         rolledOne();
-      } else if (diceResult === 2) {
+      } else if (diceResult2 === 2) {
         diceImage2.addClass("dice-two");
-      } else if (diceResult === 3) {
+      } else if (diceResult2 === 3) {
         diceImage2.addClass("dice-three");
-      } else if (diceResult === 4) {
+      } else if (diceResult2 === 4) {
         diceImage2.addClass("dice-four");
-      } else if (diceResult === 5) {
+      } else if (diceResult2 === 5) {
         diceImage2.addClass("dice-five");
-      } else if (diceResult === 6) {
+      } else if (diceResult2 === 6) {
         diceImage2.addClass("dice-six");
+      }
+
+      if (variation === "two-pig") {
+        twoPig(diceResult1, diceResult2);
+      } else {
+        bigPig(diceResult1, diceResult2);
       }
 
     }
