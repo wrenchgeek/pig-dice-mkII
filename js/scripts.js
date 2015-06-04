@@ -89,13 +89,16 @@ function updateBackground(url) {
   $("body").css({"background": "url('./images/" + url + "')", "background-size": "100% 100%"});
 }
 
-function rolledOne() {
-  switchCurrentPlayer();
-  setMessage("Oh no! You rolled a 1, you lose your current points and end your turn. You're up, " + currentPlayer.name + "!");
-  disableEndTurnBtn();
-  setRandomFailBackground();
-  $(".dice-image1").effect("shake", {times: 8}, 800);
-  $(".dice-image2").effect("shake", {times: 8}, 800);
+function rolledOne(dieResult1, dieResult2) {
+  if (variation !== "big-pig" && dieResult1 !== dieResult2) {
+    switchCurrentPlayer();
+    setMessage("Oh no! You rolled a 1, you lose your current points and end your turn. You're up, " + currentPlayer.name + "!");
+    disableEndTurnBtn();
+    setRandomFailBackground();
+    currentRoundScores = []
+    $(".dice-image1").effect("shake", {times: 8}, 800);
+    $(".dice-image2").effect("shake", {times: 8}, 800);
+  }
 }
 
 function setRandomFailBackground() {
@@ -110,15 +113,15 @@ function setRandomFailBackground() {
 }
 
 function twoPig(dieResult1, dieResult2) {
-  if (dieResult1 === 1 && dieResult2 === 1) {
+    if (dieResult1 === 1 && dieResult2 === 1) {
     currentPlayer.score = 0;
     switchCurrentPlayer();
     setMessage("Oh no! Snake Eyes, you just lost all your points. You're up, " + currentPlayer.name + "!");
     disableEndTurnBtn();
     setRandomFailBackground();
     updatePlayerScores();
-    $(".dice-image1").effect("shake", {times: 8}, 800);
-    $(".dice-image2").effect("shake", {times: 8}, 800);
+    $(".dice-image1").effect("explode", {times: 8}, 800);
+    $(".dice-image2").effect("explode", {times: 8}, 800);
 
   }
 
@@ -131,7 +134,19 @@ function twoPig(dieResult1, dieResult2) {
   }
 }
 
-function bigPig
+function bigPig(dieResult1, dieResult2) {
+  if (dieResult1 === 1 && dieResult2 === 1) {
+    currentRoundScores.push(25 - (currentRoundScores[currentRoundScores.length - 1] + currentRoundScores[currentRoundScores.length - 2]));
+    $("#current-round-score").text(getCurrentRoundScore());
+    setMessage("Snake Eyes! 25 points to you! Sweeeeet!");
+  }
+
+  if (dieResult1 === dieResult2 && dieResult1 !== 1) {
+    currentRoundScores.push((currentRoundScores[currentRoundScores.length - 1])*2);
+    $("#current-round-score").text(getCurrentRoundScore());
+    setMessage("Doubles! Double the flavor, Double the points!")
+  }
+}
 
 $(function() {
   disableEndTurnBtn();
@@ -189,7 +204,7 @@ $(function() {
 
     if (diceResult1 === 1) {
       diceImage.addClass("dice-one");
-      rolledOne();
+      rolledOne(diceResult1, diceResult2);
     } else if (diceResult1 === 2) {
       diceImage.addClass("dice-two");
     } else if (diceResult1 === 3) {
@@ -204,14 +219,15 @@ $(function() {
 
     if (variation !== "traditional") {
 
-      currentRoundScores.push(diceResult2);
+      if (diceResult1 !== 1) {currentRoundScores.push(diceResult2);}
+
 
       $("#current-round-score").text(getCurrentRoundScore());
       diceImage2.removeClass().addClass("dice");
 
       if (diceResult2 === 1) {
         diceImage2.addClass("dice-one");
-        rolledOne();
+        rolledOne(diceResult1, diceResult2);
       } else if (diceResult2 === 2) {
         diceImage2.addClass("dice-two");
       } else if (diceResult2 === 3) {
@@ -245,8 +261,7 @@ $(function() {
 
     $(".dice-result-wrapper *").hide();
 
-    if (currentPlayer.score >= 20) {
-    // if (currentPlayer.score >= 100) {
+    if (currentPlayer.score >= 100) {
       setMessage("Congratulations " + currentPlayer.name + "! You win!");
       $("#message").append("<span class='clear-scores linkify'> Click here to play again!</span>");
 
