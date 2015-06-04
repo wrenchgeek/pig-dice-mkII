@@ -32,7 +32,7 @@ function getRandomPlayer(playerOne, playerTwo) {
   var randomPlayer = players[Math.round(Math.random())];
   $("#current-player").text(randomPlayer.name);
   return randomPlayer;
-  // return players[Math.round(Math.random())];
+
 }
 
 function switchCurrentPlayer() {
@@ -167,8 +167,6 @@ $(function() {
     playerOne = new Player(playerOneName);
     playerTwo = new Player(playerTwoName);
 
-    // updateTextOnPage(".player-1-name", playerOne.name + "'s score: ");
-    // updateTextOnPage(".player-2-name", playerTwo.name + "'s score: ");
     updateTextOnPage(".player-1-name", playerOne.name + "'s");
     updateTextOnPage(".player-2-name", playerTwo.name + "'s");
 
@@ -274,5 +272,4 @@ $(function() {
     }
     switchCurrentPlayer();
   });
-
 });
